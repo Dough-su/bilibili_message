@@ -5,7 +5,11 @@ if (localPropertiesFile.exists()) {
         localProperties.load(reader)
     }
 }
-
+def keystoreProperties = new Properties()
+   def keystorePropertiesFile = rootProject.file('key.properties')
+   if (keystorePropertiesFile.exists()) {
+       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+   }
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
@@ -29,7 +33,19 @@ android {
     namespace "com.example.muse_siixn_i"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
-
+    signingConfigs {
+        release {
+            keyAlias 'upload'
+            keyPassword '566564'
+            storeFile file('upload-keystore.jks')
+            storePassword '566564'
+        }
+    }
+    buildTypes {
+        release {
+           signingConfig signingConfigs.release
+       }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
