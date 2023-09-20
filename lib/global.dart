@@ -38,6 +38,7 @@ class global {
     try {
       //将cookie中的\n和\r去掉
       cookie = cookie.replaceAll('\n', '');
+      
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('cookie', cookie);
       global.cookie = cookie;
