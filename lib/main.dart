@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:muse_siixn_i/data/chat_user.dart';
 import 'package:muse_siixn_i/pages/chat_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'global.dart';
 void main() {
   runApp(const MyApp());
 }

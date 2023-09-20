@@ -10,7 +10,7 @@ class EmojiPickerDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final double itemWidth = size.width / 4;
+    final double itemWidth = size.width / 3;
 
     return Dialog(
       child: SingleChildScrollView(

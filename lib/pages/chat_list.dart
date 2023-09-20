@@ -9,7 +9,7 @@ class ChatList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    global.initCookie();
+    global.initCookie(context);
 
     return MaterialApp(
       title: '聊天列表',
@@ -35,7 +35,7 @@ class ChatList extends StatelessWidget {
                       controller: TextEditingController(text: global.cookie),
                       onChanged: (value) {
                         //设置cookie
-                       global.setCookie(value);
+                       global.setCookie(value,context);
                       },
                     ),
                     actions: [
