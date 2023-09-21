@@ -1,3 +1,4 @@
+/// A list of maps containing chat user data.
 final List<Map<String, dynamic>> chatData = [
   {
     'name': '米诺高分少女',
