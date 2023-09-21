@@ -46,8 +46,8 @@ class AboutDialogPage extends StatelessWidget {
 /// 
 /// Throws an error if the [Uri] cannot be launched.
 Future<void> launchUrl(Uri uri) async {
-  if (await canLaunchUrl(uri)) {
-    await launchUrl(uri);
+  if (await canLaunch(uri.toString())) {
+    await launch(uri.toString());
   } else {
     throw 'Could not launch $uri';
   }
