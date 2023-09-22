@@ -1,10 +1,13 @@
 import 'package:shared_preferences/shared_preferences.dart';
-
+/// This class contains global variables and methods used throughout the application.
 class Global {
   static String cookie = '';
   static String dedeUserID = '';
   static String biliJct = '';
 
+  /// Initializes the cookie value from SharedPreferences and sets it in headers.
+  ///
+  /// Returns the cookie value as a [Future] of [String]. Returns an empty string if an exception occurs.
   static Future<String> initCookie() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -16,6 +19,9 @@ class Global {
     }
   }
 
+  /// Sets the cookie value in SharedPreferences and headers.
+  ///
+  /// Returns true if the cookie is set successfully, false otherwise.
   static Future<bool> setCookie(String cookie) async {
     try {
       //将cookie中的\n和\r去掉
@@ -29,7 +35,6 @@ class Global {
       // 修改cookie后重新设置headers
       headers['cookie'] = cookie;
       
-     //如果是网页，则设置cookie
       Map<String, String> cookies = {};
 
       List<String> cookieList = cookie.split("; ");

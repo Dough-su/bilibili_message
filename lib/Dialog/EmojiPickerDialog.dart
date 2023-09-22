@@ -28,7 +28,7 @@ class EmojiPickerDialogState extends State<EmojiPickerDialog> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final double itemWidth = size.width / 5;
+    final double itemWidth = size.width / 4;
 
     // 1. 获取key List
     var keys = widget.webEmoji.keys.toList();
@@ -121,7 +121,7 @@ class EmojiItem extends StatelessWidget {
             CachedNetworkImage(
               imageUrl: imageUrl,
               width: MediaQuery.of(context).size.width / 20,
-              height: MediaQuery.of(context).size.width / 20,
+              height: MediaQuery.of(context).size.width / 10,
               placeholder: (context, url) => const CircularProgressIndicator(),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),

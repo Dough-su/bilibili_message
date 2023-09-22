@@ -32,6 +32,13 @@ class AboutDialogPage extends StatelessWidget {
                     'https://wwai.lanzouj.com/b02r4awja?password=9arm'));
               },
             ),
+                        TextButton(
+              child: const Text('教程地址'),
+              onPressed: () {
+                launchUrl(Uri.parse(
+                    'https://www.bilibili.com/video/BV1P94y1W7Zp/'));
+              },
+            ),
           ],
         ),
       ],
