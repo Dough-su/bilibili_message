@@ -3,83 +3,119 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:http/http.dart' as http;
 import 'package:muse_siixn_i/Dialog/EmojiPickerDialog.dart';
-import 'package:muse_siixn_i/api/get_dongtai.dart';
-import 'package:muse_siixn_i/api/get_emoji.dart';
-import 'package:muse_siixn_i/api/get_meesgae.dart';
-import 'package:muse_siixn_i/api/send_message.dart';
-import 'package:muse_siixn_i/api/upload_pic.dart';
-import 'package:muse_siixn_i/global.dart';
+import 'package:muse_siixn_i/api/GetDongtai.dart';
+import 'package:muse_siixn_i/api/GetEmoji.dart';
+import 'package:muse_siixn_i/api/GetMessage.dart';
+import 'package:muse_siixn_i/api/SendMessage.dart';
+import 'package:muse_siixn_i/api/UploadPic.dart';
+import 'package:muse_siixn_i/GlobalInfo.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
-
+/// A stateful widget that represents the chat page.
+///
+/// This widget displays a chat page with a list of messages and a text input field to send new messages.
+/// It takes in the user ID, username, and image as required parameters.
+/// It also has a private `_ChatPageState` class that manages the state of the widget.
+/// The state class contains methods to load messages, load emojis, add messages, and handle attachment selection.
+/// The widget also uses the `types` library to define a `User` and `Message` class.
+/// The `web_emoji` map is used to store the web emojis and their corresponding URLs.
 class ChatPage extends StatefulWidget {
-  const ChatPage(
-      {super.key,
-      required this.userId,
-      required this.username,
-      required this.img});
+  const ChatPage({
+    super.key,
+    required this.userId,
+    required this.username,
+    required this.img,
+  });
+
+  /// The ID of the user.
   final String userId;
+
+  /// The username of the user.
   final String username;
+
+  /// The image of the user.
   final String img;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
 }
 
+/// The state class for the `ChatPage` widget.
+///
+/// This class manages the state of the `ChatPage` widget.
+/// It contains methods to load messages, load emojis, add messages, and handle attachment selection.
+/// It also uses the `types` library to define a `User` and `Message` class.
+/// The `web_emoji` map is used to store the web emojis and their corresponding URLs.
 class _ChatPageState extends State<ChatPage> {
   List<types.Message> _messages = [];
-  Map<String,String> web_emoji={};
-  //新建textEditingController
+  Map<String, String> web_emoji = {};
   final textEditingController = TextEditingController();
   final _user = types.User(
-    id: global.DedeUserID,
+    id: Global.dedeUserID,
   );
 
   @override
   void initState() {
     super.initState();
+
     _loadMessages();
     _loademoji();
   }
-  void _loademoji(){
-    var emoji_response= get_emoji().get_emojis();
-    emoji_response.then((value) => {
-      for(var packages in value['data']['packages']){
-        for(int i=0;i<packages['emote'].length;i++){
-          if(packages['emote'][i]['id']!='4')
-          web_emoji[packages['emote'][i]['text']]=packages['emote'][i]['url']
-        }
-      }
-    });
+
+  /// Loads the emojis from the server and stores them in the `web_emoji` map.
+  void _loademoji() {
+    var emojiResponse = GetEmoji().getEmojis();
+    emojiResponse.then((value) => {
+          for (var packages in value['data']['packages'])
+            {
+              for (int i = 0; i < packages['emote'].length; i++)
+                {
+                  if (packages['emote'][i]['package_id'] != 4)
+                    web_emoji[packages['emote'][i]['text']] =
+                        packages['emote'][i]['url']
+                }
+            }
+        });
   }
 
+  /// Adds a message to the `_messages` list and updates the state.
   void _addMessage(types.Message message) {
     setState(() {
       _messages.insert(0, message);
     });
   }
 
+  /// Handles the attachment selection and displays a modal bottom sheet with options.
   void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) => SafeArea(
         child: SizedBox(
-          height: 144,
+          height: 200,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  _handleImageSelection();
+                  _handleImageSelection(1);
                 },
                 child: const Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: Text('照片'),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleImageSelection(2);
+                },
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('照片(无视限制，曲线救国版,最好是横屏,横屏基本可以完美显示)'),
                 ),
               ),
               TextButton(
@@ -91,21 +127,24 @@ class _ChatPageState extends State<ChatPage> {
                   alignment: AlignmentDirectional.centerStart,
                   child: Text('分享动态'),
                 ),
-              ), TextButton(
+              ),
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                      return EmojiPickerDialog(web_emoji: web_emoji,textEditingController: textEditingController,);
-                    });
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return EmojiPickerDialog(
+                          webEmoji: web_emoji,
+                          textEditingController: textEditingController,
+                        );
+                      });
                 },
                 child: const Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: Text('表情包'),
                 ),
               ),
-
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: const Align(
@@ -120,8 +159,9 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
+  /// Handles the selection of a dongtai and displays a dialog with the available options.
   void _handledongtaiSelection() {
-    get_dongtai().get_dongtais(widget.userId).then((value) {
+    GetDongtai().getDongtais(widget.userId).then((value) {
       var cards = value['data']['items'];
       List<dynamic> dynamicList = []; // 存储动态信息的列表
 
@@ -135,42 +175,51 @@ class _ChatPageState extends State<ChatPage> {
           dynamicList.add([commentId, text, picUrl]);
         }
       }
-      //作为列表弹窗，并且可以点击
       showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return SimpleDialog(
-              title: Text('选择动态'),
-              children: dynamicList.map((item) {
-                return SimpleDialogOption(
-                  child: Text(item[1]),
-                  onPressed: () {
-                    send_message().send_messages(widget.userId, 7,
-                        '{"id":"${item[0]}","title":"${item[1]}","headline":"","source":2,"thumb":"${item[2]}","author":"爱你呦","author_id":"${global.DedeUserID}"}',context).then((value) {
-                      if (value) {
-                        final message = types.TextMessage(
-                          author: _user,
-                          createdAt: DateTime.now().millisecondsSinceEpoch,
-                          id: const Uuid().v4(),
-                          text: item[1],
-                        );
-                        _addMessage(message);
-                        //弹出
-                        Navigator.pop(context);
-                      }
-                    });
-                  },
-                );
-              }).toList(),
-            );
-          }
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("选择要分享的动态"),
+            content: SizedBox(
+              width: double.maxFinite,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: dynamicList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var item = dynamicList[index];
+                  return ListTile(
+                    title: Text(item[1]),
+                    onTap: () {
+                      SendMessage()
+                          .sendMessages(
+                              widget.userId,
+                              7,
+                              '{"id":"${item[0]}","title":"${item[1]}","headline":"","source":2,"thumb":"${item[2]}","author":"爱你呦","author_id":"${Global.dedeUserID}"}',
+                              context)
+                          .then((value) {
+                        if (value) {
+                          final message = types.TextMessage(
+                            author: _user,
+                            createdAt: DateTime.now().millisecondsSinceEpoch,
+                            id: const Uuid().v4(),
+                            text: item[1],
+                          );
+                          _addMessage(message);
+                          Navigator.pop(context);
+                        }
+                      });
+                    },
+                  );
+                },
+              ),
+            ),
+          );
+        },
       );
-
-
     });
   }
 
-  void _handleImageSelection() async {
+  void _handleImageSelection(int type) async {
     final result = await ImagePicker().pickImage(
       imageQuality: 70,
       maxWidth: 1440,
@@ -191,9 +240,12 @@ class _ChatPageState extends State<ChatPage> {
         uri: result.path,
         width: image.width.toDouble(),
       );
-      upload_pic().upload_pics(widget.userId, bytes, context).then((value) => {
-            if (value) {_addMessage(message)}
-          });
+      // ignore: use_build_context_synchronously
+      UploadPic()
+          .uploadPics(widget.userId, bytes, context, type)
+          .then((value) => {
+                if (value) {_addMessage(message)}
+              });
     }
   }
 
@@ -261,8 +313,8 @@ class _ChatPageState extends State<ChatPage> {
       id: const Uuid().v4(),
       text: message.text,
     );
-    send_message()
-        .send_messages(
+    SendMessage()
+        .sendMessages(
             widget.userId, 1, '{"content":"${message.text}"}', context)
         .then((value) => {
               if (value) {_addMessage(textMessage)}
@@ -271,22 +323,20 @@ class _ChatPageState extends State<ChatPage> {
 
   void _loadMessages() async {
     List<types.Message> messages = [];
-    final webData = await get_message().get_messages(widget.userId);
+    final webData = await GetMessage().getMessages(widget.userId);
     final webMessages = webData['data']['messages'];
 
     for (final message in webMessages) {
+      //打印log
       if (message['msg_type'] == 1) {
-        //设置头像和昵称头像
         final author = types.User(
-          id: message['sender_uid'].toString() == global.DedeUserID
-              ? global.DedeUserID
+          id: message['sender_uid'].toString() == Global.dedeUserID
+              ? Global.dedeUserID
               : widget.userId,
           firstName: widget.username,
           lastName: '',
           imageUrl: widget.img,
         );
-
-
         String text = message['content']
             .toString()
             .substring(12, message['content'].toString().length - 2);
@@ -303,8 +353,8 @@ class _ChatPageState extends State<ChatPage> {
         final content = jsonDecode(message['content']);
         //设置头像和昵称头像
         final author = types.User(
-          id: message['sender_uid'].toString() == global.DedeUserID
-              ? global.DedeUserID
+          id: message['sender_uid'].toString() == Global.dedeUserID
+              ? Global.dedeUserID
               : widget.userId,
           firstName: widget.username,
           imageUrl: widget.img,
@@ -318,12 +368,31 @@ class _ChatPageState extends State<ChatPage> {
           size: content['size'],
         );
         messages.add(imageMessage);
+      }
+      if (message['msg_type'] == 7) {
+        final content = jsonDecode(message['content']);
+        //设置头像和昵称头像
+        final author = types.User(
+          id: message['sender_uid'].toString() == Global.dedeUserID
+              ? Global.dedeUserID
+              : widget.userId,
+          firstName: widget.username,
+          imageUrl: widget.img,
+        );
+        final imageMessage = types.ImageMessage(
+          uri: content['thumb'],
+          author: author,
+          name: 'image.jpg',
+          id: message['msg_seqno'].toString(),
+          createdAt: message['msg_timestamp'],
+          size: 10,
+        );
+        messages.add(imageMessage);
+      }
     }
-    };
     setState(() {
       _messages = messages;
-
-  });
+    });
   }
 
   @override

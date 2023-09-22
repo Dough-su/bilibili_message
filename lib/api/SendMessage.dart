@@ -1,14 +1,17 @@
 import 'package:achievement_view/achievement_view.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:muse_siixn_i/api/get_medal_wall.dart';
-import 'package:muse_siixn_i/global.dart';
+import 'package:muse_siixn_i/api/Baseurl.dart';
+import 'package:muse_siixn_i/api/GetMedalWall.dart';
+import 'package:muse_siixn_i/GlobalInfo.dart';
 import 'package:uuid/uuid.dart';
-
-class send_message {
+/// This class is responsible for sending messages to a user on Bilibili.
+/// It contains a method `sendMessages` which takes in the user ID, message type, message content, and a BuildContext.
+/// The `sendMessages` method sends the message to the user and returns a boolean indicating whether the message was sent successfully or not.
+/// If the message fails to send, an AchievementView is displayed with an error message.
+class SendMessage {
   Map<String, dynamic> sendData = {
-    'msg[sender_uid]': global.DedeUserID,
+    'msg[sender_uid]': Global.dedeUserID,
     'msg[receiver_id]': '',
     'msg[receiver_type]': '1',
     'msg[msg_type]': '1',
@@ -24,27 +27,23 @@ class send_message {
     'csrf': '',
   };
 
-  Future<bool> send_messages(
+  /// Sends a message to the user with the given [userId], [msgType], and [content].
+  /// Returns a boolean indicating whether the message was sent successfully or not.
+  /// If the message fails to send, an AchievementView is displayed with an error message.
+  Future<bool> sendMessages(
       String userId, msgType, content, BuildContext context) async {
     try {
-      //设置data中的receiver_id
       sendData['msg[receiver_id]'] = userId;
-      //设置data中的timestamp
       sendData['msg[timestamp]'] =
           DateTime.now().millisecondsSinceEpoch.toString();
-      //设置data中的csrf_token
-      sendData['csrf_token'] = global.bili_jct;
-      //设置data中的csrf
-      sendData['csrf'] = global.bili_jct;
-      //设置data中的content
+      sendData['csrf_token'] = Global.biliJct;
+      sendData['csrf'] = Global.biliJct;
       sendData['msg[content]'] = content;
-      //设置data中的dev_id，随机uuid
-      sendData['msg[dev_id]'] = Uuid().v4();
-      //设置data中的msg_type
+      sendData['msg[dev_id]'] = const Uuid().v4();
       sendData['msg[msg_type]'] = msgType;
-      //设置data中的msg_status
       Dio dio = Dio();
-      if (!await get_medal_wall().get_medal_walls(global.DedeUserID, userId)) {
+      if (!await GetMedalWall().getMedalWalls(Global.dedeUserID, userId)) {
+        // ignore: use_build_context_synchronously
         AchievementView(
           title: "出错了",
           subTitle: "你没有该主播大于等于4级勋章，无法发送消息",
@@ -55,17 +54,16 @@ class send_message {
       }
 
       Response response = await dio.post(
-        'https://api.vc.bilibili.com/web_im/v1/web_im/send_msg',
+        '${Baseurl.apivc}/web_im/v1/web_im/send_msg',
         data: sendData,
-        //携带cookie和headers
-        options: Options(headers: global.headers),
+        options: Options(headers: Global.headers),
       );
 
-      //将返回的json数据转换为map
       Map<String, dynamic> data = response.data;
       if (data['code'] == 0) {
         return true;
       } else {
+        // ignore: use_build_context_synchronously
         AchievementView(
           title: "出错了",
           subTitle: data['message'],
