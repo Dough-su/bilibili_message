@@ -9,6 +9,9 @@ class Global {
   ///
   /// Returns the cookie value as a [Future] of [String]. Returns an empty string if an exception occurs.
   static Future<String> initCookie() async {
+    print(StackTrace.current);
+
+    //打印出调用栈
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       cookie = prefs.getString('cookie') ?? '';
@@ -23,6 +26,7 @@ class Global {
   ///
   /// Returns true if the cookie is set successfully, false otherwise.
   static Future<bool> setCookie(String cookie) async {
+
     try {
       //将cookie中的\n和\r去掉
       cookie = cookie.replaceAll('\n', '');
@@ -41,11 +45,19 @@ class Global {
       for (String cookie in cookieList) {
         List<String> cookieParts = cookie.split("=");
         cookies[cookieParts[0]] = cookieParts[1];
+        if (cookieParts[0] == 'bili_jct') {
+          headers['csrf'] = cookieParts[1];
+          biliJct=cookieParts[1];
+        }
+        if (cookieParts[0] == 'DedeUserID') {
+          headers['uid'] = cookieParts[1];
+          dedeUserID=cookieParts[1];
+        }
       }
       // 设置bili_jct
-      biliJct = cookies['bili_jct'] ?? '';
+      biliJct = await cookies['bili_jct'] ?? '';
       //设置DedeUserID
-      dedeUserID = cookies['DedeUserID'] ?? '';
+      dedeUserID = await cookies['DedeUserID'] ?? '';
       return true;
     } catch (e) {
       return false; // 返回false表示出现异常

@@ -8,6 +8,8 @@ import 'package:muse_siixn_i/model/dongtai_response_entity.dart';
 import 'package:muse_siixn_i/model/emoji_entity.dart';
 import 'package:muse_siixn_i/model/medal_wall_entity.dart';
 import 'package:muse_siixn_i/model/pic_response_entity.dart';
+import 'package:muse_siixn_i/model/qrcode_entity.dart';
+import 'package:muse_siixn_i/model/qrcode_status_entity.dart';
 import 'package:muse_siixn_i/model/web_message_entity.dart';
 
 JsonConvert jsonConvert = JsonConvert();
@@ -265,6 +267,10 @@ class JsonConvert {
             .fromJson,
         (PicResponseEntity).toString(): PicResponseEntity.fromJson,
         (PicResponseData).toString(): PicResponseData.fromJson,
+        (QrcodeEntity).toString(): QrcodeEntity.fromJson,
+        (QrcodeData).toString(): QrcodeData.fromJson,
+        (QrcodeStatusEntity).toString(): QrcodeStatusEntity.fromJson,
+        (QrcodeStatusData).toString(): QrcodeStatusData.fromJson,
         (WebMessageEntity).toString(): WebMessageEntity.fromJson,
         (WebMessageData).toString(): WebMessageData.fromJson,
         (WebMessageDataMessages).toString(): WebMessageDataMessages.fromJson,
@@ -1010,6 +1016,22 @@ class JsonConvert {
     if (<PicResponseData>[] is M) {
       return data.map<PicResponseData>((Map<String, dynamic> e) =>
           PicResponseData.fromJson(e)).toList() as M;
+    }
+    if (<QrcodeEntity>[] is M) {
+      return data.map<QrcodeEntity>((Map<String, dynamic> e) =>
+          QrcodeEntity.fromJson(e)).toList() as M;
+    }
+    if (<QrcodeData>[] is M) {
+      return data.map<QrcodeData>((Map<String, dynamic> e) =>
+          QrcodeData.fromJson(e)).toList() as M;
+    }
+    if (<QrcodeStatusEntity>[] is M) {
+      return data.map<QrcodeStatusEntity>((Map<String, dynamic> e) =>
+          QrcodeStatusEntity.fromJson(e)).toList() as M;
+    }
+    if (<QrcodeStatusData>[] is M) {
+      return data.map<QrcodeStatusData>((Map<String, dynamic> e) =>
+          QrcodeStatusData.fromJson(e)).toList() as M;
     }
     if (<WebMessageEntity>[] is M) {
       return data.map<WebMessageEntity>((Map<String, dynamic> e) =>

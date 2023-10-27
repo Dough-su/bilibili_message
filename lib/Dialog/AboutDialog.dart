@@ -13,7 +13,7 @@ class AboutDialogPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AboutDialog(
       applicationName: 'eoe私信',
-      applicationVersion: '2.0.0',
+      applicationVersion: '3.0.0',
       applicationLegalese: '本项目仅供学习交流使用，不得用于商业用途，否则后果自负，更新地址密码为9arm',
       children: [
         Row(

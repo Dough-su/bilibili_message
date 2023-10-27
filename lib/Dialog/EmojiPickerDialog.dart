@@ -21,26 +21,42 @@ class EmojiPickerDialog extends StatefulWidget {
   EmojiPickerDialogState createState() => EmojiPickerDialogState();
 }
 
-/// The state of the [EmojiPickerDialog].
 class EmojiPickerDialogState extends State<EmojiPickerDialog> {
   String filter = '';
+  String selectedGroup = '';
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final double itemWidth = size.width / 4;
 
-    // 1. 获取key List
-    var keys = widget.webEmoji.keys.toList();
+    // 1. 获取分组列表
+    var groups = <String>{};
+    widget.webEmoji.keys.forEach((key) {
+      //如果没有_则单独一组
+      if (!key.contains('_')) {
+        return;
+      }
+      var groupName = key.split('_')[0].replaceAll('[', '');
+      //替换[为空
+      groups.add(groupName);
+    });
+    var groupList = groups.toList();
 
-    // 2. 过滤
-    var filteredKeys = keys.where((key) {
-      if (filter.isEmpty) return true;
-      return key.contains(filter);
+    // 2. 获取过滤后的表情包
+    var filteredEmojis = widget.webEmoji.entries.where((entry) {
+      var groupName = entry.key.split('_')[0].replaceAll('[', '');
+      if (filter.isEmpty && selectedGroup.isEmpty) {
+        return true;
+      } else if (filter.isNotEmpty && selectedGroup.isNotEmpty) {
+        return groupName == selectedGroup && entry.key.contains(filter);
+      } else if (filter.isNotEmpty) {
+        return entry.key.contains(filter);
+      } else {
+        return groupName == selectedGroup;
+      }
     }).toList();
 
-    // 3. 重建Map
-    var filteredEmojis = {for (var k in filteredKeys) k: widget.webEmoji[k]!};
     return Dialog(
       child: SingleChildScrollView(
         child: Container(
@@ -65,6 +81,34 @@ class EmojiPickerDialogState extends State<EmojiPickerDialog> {
                 ),
               ),
               const SizedBox(height: 16.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    const SizedBox(width: 16.0),
+                    ChoiceChip(
+                      label: const Text('全部'),
+                      selected: selectedGroup.isEmpty,
+                      onSelected: (selected) {
+                        setState(() {
+                          selectedGroup = '';
+                        });
+                      },
+                    ),
+                    const SizedBox(width: 8.0),
+                    ...groupList.map((group) => ChoiceChip(
+                      label: Text(group),
+                      selected: selectedGroup == group,
+                      onSelected: (selected) {
+                        setState(() {
+                          selectedGroup = group;
+                        });
+                      },
+                    )),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16.0),
               GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: (size.width / itemWidth).round(),
@@ -72,8 +116,8 @@ class EmojiPickerDialogState extends State<EmojiPickerDialog> {
                 ),
                 itemCount: filteredEmojis.length,
                 itemBuilder: (context, index) {
-                  String emojiText = filteredEmojis.keys.elementAt(index);
-                  String emojiImageUrl = filteredEmojis.values.elementAt(index);
+                  String emojiText = filteredEmojis[index].key;
+                  String emojiImageUrl = filteredEmojis[index].value;
                   return EmojiItem(
                     text: emojiText,
                     imageUrl: emojiImageUrl,
@@ -93,11 +137,6 @@ class EmojiPickerDialogState extends State<EmojiPickerDialog> {
   }
 }
 
-/// A widget that displays an emoji image and text.
-///
-/// This widget is used to represent an emoji in the [EmojiPickerDialog].
-/// It displays the emoji image using [CachedNetworkImage] and the emoji text below it.
-/// When tapped, it calls the [onTap] function.
 class EmojiItem extends StatelessWidget {
   final String text;
   final String imageUrl;

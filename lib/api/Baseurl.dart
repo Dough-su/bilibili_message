@@ -14,4 +14,7 @@ class Baseurl {
 
   /// The base URL for the Bilibili message API.
   static String get message => useLocalhost ? 'http://127.0.0.1:9000' : 'https://message.bilibili.com';
+  /// The base URL for the Bilibili passport API.
+/// The base URL for the Bilibili passport API.
+  static String get passport => useLocalhost ? 'http://127.0.0.1:9000/passport' : 'https://passport.bilibili.com';
 }

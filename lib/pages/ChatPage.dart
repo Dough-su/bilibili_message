@@ -1,3 +1,4 @@
+import 'package:achievement_view/achievement_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'dart:convert';
@@ -60,7 +61,6 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
-
     _loadMessages();
     _loademoji();
   }
@@ -114,7 +114,6 @@ class _ChatPageState extends State<ChatPage> {
                   _handleImageSelection(2);
                 },
                 child: const Align(
-                  alignment: AlignmentDirectional.centerStart,
                   child: Text('照片(无视限制，曲线救国版,最好是横屏,横屏基本可以完美显示)'),
                 ),
               ),
@@ -314,8 +313,9 @@ class _ChatPageState extends State<ChatPage> {
       text: message.text,
     );
     SendMessage()
+    //替换message的\n为\\n，\r为\\r
         .sendMessages(
-            widget.userId, 1, '{"content":"${message.text}"}', context)
+            widget.userId, 1, '{"content":"${message.text.replaceAll('\n', '\\n').replaceAll('\r', '\\r')}"}', context)
         .then((value) => {
               if (value) {_addMessage(textMessage)}
             });
@@ -324,6 +324,20 @@ class _ChatPageState extends State<ChatPage> {
   void _loadMessages() async {
     List<types.Message> messages = [];
     final webData = await GetMessage().getMessages(widget.userId);
+    try {
+      if (webData['code'] != 0) {
+        AchievementView(
+          title:  "消息列表加载错误",
+          subTitle: webData['message'],
+          borderRadius: BorderRadius.circular(20.0),
+          color: Colors.redAccent,
+        ).show(context);
+        return;
+      }
+    } catch (e) {
+      print(e);
+      return;
+    }
     final webMessages = webData['data']['messages'];
 
     for (final message in webMessages) {
