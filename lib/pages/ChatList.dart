@@ -180,7 +180,7 @@ class _ChatListState extends State<ChatList> {
                         ),
                         //或是点击以下的链接
                         TextButton(
-                          child: const Text('或是点击复制登录链接在手机浏览器打开'),
+                          child: const Text('或是点击下面的按钮复制登录链接在手机浏览器打开'),
                           onPressed: () {
                             Clipboard.setData(ClipboardData(text: _qrCodeUrl!));
                             AchievementView(
@@ -191,6 +191,7 @@ class _ChatListState extends State<ChatList> {
                             ).show(context);
                           },
                         ),
+                                      const Text('请注意，该软件并没有开源，里面的方法从始至终作者一人摸索出来的，全网没有先例，每次的一点小发现都要在四五个小时.我并不推荐宣传，因为过多宣传导致这个漏洞被封大家都没办法用，真的很想宣传的话请标注好原作者，如果直接抓包就得来了成果和剽窃有什么区别呢？\n2023.11.05-20:49')
                       ],
                     ),
                     actions: [

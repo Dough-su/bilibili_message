@@ -11,6 +11,7 @@ import 'package:muse_siixn_i/model/pic_response_entity.dart';
 import 'package:muse_siixn_i/model/qrcode_entity.dart';
 import 'package:muse_siixn_i/model/qrcode_status_entity.dart';
 import 'package:muse_siixn_i/model/web_message_entity.dart';
+import 'package:muse_siixn_i/model/zhuanlan_pic_entity.dart';
 
 JsonConvert jsonConvert = JsonConvert();
 
@@ -20,262 +21,26 @@ typedef ConvertExceptionHandler = void Function(Object error, StackTrace stackTr
 
 class JsonConvert {
   static ConvertExceptionHandler? onError;
+  JsonConvertClassCollection convertFuncMap = JsonConvertClassCollection();
 
-  static Map<String, JsonConvertFunction> get convertFuncMap =>
-      {
-        (DongtaiResponseEntity).toString(): DongtaiResponseEntity.fromJson,
-        (DongtaiResponseData).toString(): DongtaiResponseData.fromJson,
-        (DongtaiResponseDataItems).toString(): DongtaiResponseDataItems
-            .fromJson,
-        (DongtaiResponseDataItemsBasic)
-            .toString(): DongtaiResponseDataItemsBasic.fromJson,
-        (DongtaiResponseDataItemsBasicLikeIcon)
-            .toString(): DongtaiResponseDataItemsBasicLikeIcon.fromJson,
-        (DongtaiResponseDataItemsModules)
-            .toString(): DongtaiResponseDataItemsModules.fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthor)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthor.fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatar)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatar
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarContainerSize)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarContainerSize
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayers)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayers
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayers)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayers
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpec)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpec
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecPosSpec)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecPosSpec
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecRenderSpec)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecRenderSpec
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecSizeSpec)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecSizeSpec
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfig)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfig
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTags)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTags
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsAvatarLayer)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsAvatarLayer
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfg)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfg
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfig)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfig
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfigWebCssStyle)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfigWebCssStyle
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResource)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResource
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImage)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImage
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrc)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrc
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrcRemote)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrcRemote
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorDecorate)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorDecorate
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorDecorateFan)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorDecorateFan
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorOfficialVerify)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorOfficialVerify
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorPendant)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorPendant
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorVip)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorVip
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleAuthorVipLabel)
-            .toString(): DongtaiResponseDataItemsModulesModuleAuthorVipLabel
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleDynamic)
-            .toString(): DongtaiResponseDataItemsModulesModuleDynamic.fromJson,
-        (DongtaiResponseDataItemsModulesModuleDynamicMajor)
-            .toString(): DongtaiResponseDataItemsModulesModuleDynamicMajor
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleDynamicMajorOpus)
-            .toString(): DongtaiResponseDataItemsModulesModuleDynamicMajorOpus
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleDynamicMajorOpusPics)
-            .toString(): DongtaiResponseDataItemsModulesModuleDynamicMajorOpusPics
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleDynamicMajorOpusSummary)
-            .toString(): DongtaiResponseDataItemsModulesModuleDynamicMajorOpusSummary
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleDynamicMajorOpusSummaryRichTextNodes)
-            .toString(): DongtaiResponseDataItemsModulesModuleDynamicMajorOpusSummaryRichTextNodes
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleInteraction)
-            .toString(): DongtaiResponseDataItemsModulesModuleInteraction
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleInteractionItems)
-            .toString(): DongtaiResponseDataItemsModulesModuleInteractionItems
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleInteractionItemsDesc)
-            .toString(): DongtaiResponseDataItemsModulesModuleInteractionItemsDesc
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleInteractionItemsDescRichTextNodes)
-            .toString(): DongtaiResponseDataItemsModulesModuleInteractionItemsDescRichTextNodes
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleMore)
-            .toString(): DongtaiResponseDataItemsModulesModuleMore.fromJson,
-        (DongtaiResponseDataItemsModulesModuleMoreThreePointItems)
-            .toString(): DongtaiResponseDataItemsModulesModuleMoreThreePointItems
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleMoreThreePointItemsParams)
-            .toString(): DongtaiResponseDataItemsModulesModuleMoreThreePointItemsParams
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleMoreThreePointItemsModal)
-            .toString(): DongtaiResponseDataItemsModulesModuleMoreThreePointItemsModal
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleStat)
-            .toString(): DongtaiResponseDataItemsModulesModuleStat.fromJson,
-        (DongtaiResponseDataItemsModulesModuleStatComment)
-            .toString(): DongtaiResponseDataItemsModulesModuleStatComment
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleStatForward)
-            .toString(): DongtaiResponseDataItemsModulesModuleStatForward
-            .fromJson,
-        (DongtaiResponseDataItemsModulesModuleStatLike)
-            .toString(): DongtaiResponseDataItemsModulesModuleStatLike.fromJson,
-        (DongtaiResponseDataItemsOrig).toString(): DongtaiResponseDataItemsOrig
-            .fromJson,
-        (DongtaiResponseDataItemsOrigBasic)
-            .toString(): DongtaiResponseDataItemsOrigBasic.fromJson,
-        (DongtaiResponseDataItemsOrigBasicLikeIcon)
-            .toString(): DongtaiResponseDataItemsOrigBasicLikeIcon.fromJson,
-        (DongtaiResponseDataItemsOrigModules)
-            .toString(): DongtaiResponseDataItemsOrigModules.fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthor)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthor
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatar)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatar
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarContainerSize)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarContainerSize
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayers)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayers
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayers)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayers
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpec)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpec
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecPosSpec)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecPosSpec
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecRenderSpec)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecRenderSpec
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecSizeSpec)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecSizeSpec
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfig)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfig
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTags)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTags
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsAvatarLayer)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsAvatarLayer
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfg)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfg
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfig)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfig
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfigWebCssStyle)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfigWebCssStyle
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResource)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResource
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImage)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImage
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrc)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrc
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrcRemote)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrcRemote
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorOfficialVerify)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorOfficialVerify
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorPendant)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorPendant
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorVip)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorVip
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleAuthorVipLabel)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorVipLabel
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleDynamic)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleDynamic
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleDynamicMajor)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleDynamicMajor
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchive)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchive
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchiveBadge)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchiveBadge
-            .fromJson,
-        (DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchiveStat)
-            .toString(): DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchiveStat
-            .fromJson,
-        (EmojiEntity).toString(): EmojiEntity.fromJson,
-        (EmojiData).toString(): EmojiData.fromJson,
-        (EmojiDataSetting).toString(): EmojiDataSetting.fromJson,
-        (EmojiDataPackages).toString(): EmojiDataPackages.fromJson,
-        (EmojiDataPackagesMeta).toString(): EmojiDataPackagesMeta.fromJson,
-        (EmojiDataPackagesEmote).toString(): EmojiDataPackagesEmote.fromJson,
-        (EmojiDataPackagesEmoteMeta).toString(): EmojiDataPackagesEmoteMeta
-            .fromJson,
-        (EmojiDataPackagesEmoteFlags).toString(): EmojiDataPackagesEmoteFlags
-            .fromJson,
-        (EmojiDataPackagesFlags).toString(): EmojiDataPackagesFlags.fromJson,
-        (MedalWallEntity).toString(): MedalWallEntity.fromJson,
-        (MedalWallData).toString(): MedalWallData.fromJson,
-        (MedalWallDataList).toString(): MedalWallDataList.fromJson,
-        (MedalWallDataListMedalInfo).toString(): MedalWallDataListMedalInfo
-            .fromJson,
-        (PicResponseEntity).toString(): PicResponseEntity.fromJson,
-        (PicResponseData).toString(): PicResponseData.fromJson,
-        (QrcodeEntity).toString(): QrcodeEntity.fromJson,
-        (QrcodeData).toString(): QrcodeData.fromJson,
-        (QrcodeStatusEntity).toString(): QrcodeStatusEntity.fromJson,
-        (QrcodeStatusData).toString(): QrcodeStatusData.fromJson,
-        (WebMessageEntity).toString(): WebMessageEntity.fromJson,
-        (WebMessageData).toString(): WebMessageData.fromJson,
-        (WebMessageDataMessages).toString(): WebMessageDataMessages.fromJson,
-        (WebMessageDataEInfos).toString(): WebMessageDataEInfos.fromJson,
-      };
+  /// When you are in the development, to generate a new model class, hot-reload doesn't find new generation model class, you can build on MaterialApp method called jsonConvert. ReassembleConvertFuncMap (); This method only works in a development environment
+  /// https://flutter.cn/docs/development/tools/hot-reload
+  /// class MyApp extends StatelessWidget {
+  ///    const MyApp({Key? key})
+  ///        : super(key: key);
+  ///
+  ///    @override
+  ///    Widget build(BuildContext context) {
+  ///      jsonConvert.reassembleConvertFuncMap();
+  ///      return MaterialApp();
+  ///    }
+  /// }
+  void reassembleConvertFuncMap() {
+    bool isReleaseMode = const bool.fromEnvironment('dart.vm.product');
+    if (!isReleaseMode) {
+      convertFuncMap = JsonConvertClassCollection();
+    }
+  }
 
   T? convert<T>(dynamic value, {EnumConvertFunction? enumConvert}) {
     if (value == null) {
@@ -362,7 +127,8 @@ class JsonConvert {
         }
         return convertFuncMap[type]!(Map<String, dynamic>.from(value)) as T;
       } else {
-        throw UnimplementedError('$type unimplemented');
+        throw UnimplementedError(
+            '$type unimplemented,you can try running the app again');
       }
     }
   }
@@ -1049,6 +815,14 @@ class JsonConvert {
       return data.map<WebMessageDataEInfos>((Map<String, dynamic> e) =>
           WebMessageDataEInfos.fromJson(e)).toList() as M;
     }
+    if (<ZhuanlanPicEntity>[] is M) {
+      return data.map<ZhuanlanPicEntity>((Map<String, dynamic> e) =>
+          ZhuanlanPicEntity.fromJson(e)).toList() as M;
+    }
+    if (<ZhuanlanPicData>[] is M) {
+      return data.map<ZhuanlanPicData>((Map<String, dynamic> e) =>
+          ZhuanlanPicData.fromJson(e)).toList() as M;
+    }
 
     debugPrint("${M.toString()} not found");
 
@@ -1065,5 +839,263 @@ class JsonConvert {
     } else {
       return jsonConvert.convert<M>(json);
     }
+  }
+}
+
+class JsonConvertClassCollection {
+  Map<String, JsonConvertFunction> convertFuncMap = {
+    (DongtaiResponseEntity).toString(): DongtaiResponseEntity.fromJson,
+    (DongtaiResponseData).toString(): DongtaiResponseData.fromJson,
+    (DongtaiResponseDataItems).toString(): DongtaiResponseDataItems.fromJson,
+    (DongtaiResponseDataItemsBasic).toString(): DongtaiResponseDataItemsBasic
+        .fromJson,
+    (DongtaiResponseDataItemsBasicLikeIcon)
+        .toString(): DongtaiResponseDataItemsBasicLikeIcon.fromJson,
+    (DongtaiResponseDataItemsModules)
+        .toString(): DongtaiResponseDataItemsModules.fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthor)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthor.fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatar)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatar.fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarContainerSize)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarContainerSize
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayers)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayers
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayers)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayers
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpec)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpec
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecPosSpec)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecPosSpec
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecRenderSpec)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecRenderSpec
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecSizeSpec)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecSizeSpec
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfig)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfig
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTags)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTags
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsAvatarLayer)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsAvatarLayer
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfg)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfg
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfig)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfig
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfigWebCssStyle)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfigWebCssStyle
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResource)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResource
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImage)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImage
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrc)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrc
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrcRemote)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrcRemote
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorDecorate)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorDecorate
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorDecorateFan)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorDecorateFan
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorOfficialVerify)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorOfficialVerify
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorPendant)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorPendant
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorVip)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorVip.fromJson,
+    (DongtaiResponseDataItemsModulesModuleAuthorVipLabel)
+        .toString(): DongtaiResponseDataItemsModulesModuleAuthorVipLabel
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleDynamic)
+        .toString(): DongtaiResponseDataItemsModulesModuleDynamic.fromJson,
+    (DongtaiResponseDataItemsModulesModuleDynamicMajor)
+        .toString(): DongtaiResponseDataItemsModulesModuleDynamicMajor.fromJson,
+    (DongtaiResponseDataItemsModulesModuleDynamicMajorOpus)
+        .toString(): DongtaiResponseDataItemsModulesModuleDynamicMajorOpus
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleDynamicMajorOpusPics)
+        .toString(): DongtaiResponseDataItemsModulesModuleDynamicMajorOpusPics
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleDynamicMajorOpusSummary)
+        .toString(): DongtaiResponseDataItemsModulesModuleDynamicMajorOpusSummary
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleDynamicMajorOpusSummaryRichTextNodes)
+        .toString(): DongtaiResponseDataItemsModulesModuleDynamicMajorOpusSummaryRichTextNodes
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleInteraction)
+        .toString(): DongtaiResponseDataItemsModulesModuleInteraction.fromJson,
+    (DongtaiResponseDataItemsModulesModuleInteractionItems)
+        .toString(): DongtaiResponseDataItemsModulesModuleInteractionItems
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleInteractionItemsDesc)
+        .toString(): DongtaiResponseDataItemsModulesModuleInteractionItemsDesc
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleInteractionItemsDescRichTextNodes)
+        .toString(): DongtaiResponseDataItemsModulesModuleInteractionItemsDescRichTextNodes
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleMore)
+        .toString(): DongtaiResponseDataItemsModulesModuleMore.fromJson,
+    (DongtaiResponseDataItemsModulesModuleMoreThreePointItems)
+        .toString(): DongtaiResponseDataItemsModulesModuleMoreThreePointItems
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleMoreThreePointItemsParams)
+        .toString(): DongtaiResponseDataItemsModulesModuleMoreThreePointItemsParams
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleMoreThreePointItemsModal)
+        .toString(): DongtaiResponseDataItemsModulesModuleMoreThreePointItemsModal
+        .fromJson,
+    (DongtaiResponseDataItemsModulesModuleStat)
+        .toString(): DongtaiResponseDataItemsModulesModuleStat.fromJson,
+    (DongtaiResponseDataItemsModulesModuleStatComment)
+        .toString(): DongtaiResponseDataItemsModulesModuleStatComment.fromJson,
+    (DongtaiResponseDataItemsModulesModuleStatForward)
+        .toString(): DongtaiResponseDataItemsModulesModuleStatForward.fromJson,
+    (DongtaiResponseDataItemsModulesModuleStatLike)
+        .toString(): DongtaiResponseDataItemsModulesModuleStatLike.fromJson,
+    (DongtaiResponseDataItemsOrig).toString(): DongtaiResponseDataItemsOrig
+        .fromJson,
+    (DongtaiResponseDataItemsOrigBasic)
+        .toString(): DongtaiResponseDataItemsOrigBasic.fromJson,
+    (DongtaiResponseDataItemsOrigBasicLikeIcon)
+        .toString(): DongtaiResponseDataItemsOrigBasicLikeIcon.fromJson,
+    (DongtaiResponseDataItemsOrigModules)
+        .toString(): DongtaiResponseDataItemsOrigModules.fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthor)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthor.fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatar)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatar
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarContainerSize)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarContainerSize
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayers)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayers
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayers)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayers
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpec)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpec
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecPosSpec)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecPosSpec
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecRenderSpec)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecRenderSpec
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecSizeSpec)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersGeneralSpecSizeSpec
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfig)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfig
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTags)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTags
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsAvatarLayer)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsAvatarLayer
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfg)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfg
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfig)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfig
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfigWebCssStyle)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersLayerConfigTagsGeneralCfgGeneralConfigWebCssStyle
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResource)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResource
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImage)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImage
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrc)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrc
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrcRemote)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorAvatarFallbackLayersLayersResourceResImageImageSrcRemote
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorOfficialVerify)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorOfficialVerify
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorPendant)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorPendant
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorVip)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorVip
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleAuthorVipLabel)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleAuthorVipLabel
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleDynamic)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleDynamic.fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleDynamicMajor)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleDynamicMajor
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchive)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchive
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchiveBadge)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchiveBadge
+        .fromJson,
+    (DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchiveStat)
+        .toString(): DongtaiResponseDataItemsOrigModulesModuleDynamicMajorArchiveStat
+        .fromJson,
+    (EmojiEntity).toString(): EmojiEntity.fromJson,
+    (EmojiData).toString(): EmojiData.fromJson,
+    (EmojiDataSetting).toString(): EmojiDataSetting.fromJson,
+    (EmojiDataPackages).toString(): EmojiDataPackages.fromJson,
+    (EmojiDataPackagesMeta).toString(): EmojiDataPackagesMeta.fromJson,
+    (EmojiDataPackagesEmote).toString(): EmojiDataPackagesEmote.fromJson,
+    (EmojiDataPackagesEmoteMeta).toString(): EmojiDataPackagesEmoteMeta
+        .fromJson,
+    (EmojiDataPackagesEmoteFlags).toString(): EmojiDataPackagesEmoteFlags
+        .fromJson,
+    (EmojiDataPackagesFlags).toString(): EmojiDataPackagesFlags.fromJson,
+    (MedalWallEntity).toString(): MedalWallEntity.fromJson,
+    (MedalWallData).toString(): MedalWallData.fromJson,
+    (MedalWallDataList).toString(): MedalWallDataList.fromJson,
+    (MedalWallDataListMedalInfo).toString(): MedalWallDataListMedalInfo
+        .fromJson,
+    (PicResponseEntity).toString(): PicResponseEntity.fromJson,
+    (PicResponseData).toString(): PicResponseData.fromJson,
+    (QrcodeEntity).toString(): QrcodeEntity.fromJson,
+    (QrcodeData).toString(): QrcodeData.fromJson,
+    (QrcodeStatusEntity).toString(): QrcodeStatusEntity.fromJson,
+    (QrcodeStatusData).toString(): QrcodeStatusData.fromJson,
+    (WebMessageEntity).toString(): WebMessageEntity.fromJson,
+    (WebMessageData).toString(): WebMessageData.fromJson,
+    (WebMessageDataMessages).toString(): WebMessageDataMessages.fromJson,
+    (WebMessageDataEInfos).toString(): WebMessageDataEInfos.fromJson,
+    (ZhuanlanPicEntity).toString(): ZhuanlanPicEntity.fromJson,
+    (ZhuanlanPicData).toString(): ZhuanlanPicData.fromJson,
+  };
+
+  bool containsKey(String type) {
+    return convertFuncMap.containsKey(type);
+  }
+
+  JsonConvertFunction? operator [](String key) {
+    return convertFuncMap[key];
   }
 }

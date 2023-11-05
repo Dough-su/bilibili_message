@@ -73,6 +73,7 @@ class SendMessage {
         return false;
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       AchievementView(
         title: "出错了",
         subTitle: "发送消息失败：${e.toString()}",
