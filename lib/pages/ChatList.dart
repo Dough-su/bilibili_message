@@ -140,74 +140,77 @@ class _ChatListState extends State<ChatList> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('设置'),
-                    content: Column(
-                      children: [
-                        const Text('设置cookie'),
-                        TextField(
-                          controller:
-                              TextEditingController(text: Global.cookie),
-                          onChanged: (value) {
-                            _inputCookie = value;  // 保存输入框里的值，而不是直接保存cookie
+                  return 
+  AlertDialog(
+  title: const Text('设置'),
+  content: SingleChildScrollView(  // 使用SingleChildScrollView包裹Column
+    child: Column(
+      children: [
+        const Text('设置cookie'),
+        TextField(
+          controller:
+              TextEditingController(text: Global.cookie),
+          onChanged: (value) {
+            _inputCookie = value;  // 保存输入框里的值，而不是直接保存cookie
 
-                          },
-                        ),
-                        const Text('--或是扫描以下的二维码--'),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.3,
-                          child: FutureBuilder<String>(
-                              future: GetQrcode().GetQrcodes(),
-                              builder: (BuildContext context, AsyncSnapshot<String> snapshot){
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return CircularProgressIndicator();
-                                } else if (snapshot.error != null) {
-                                  return Text('Error: ${snapshot.error}');
-                                } else {
-                                  _qrCodeUrl = snapshot.data;
-                                  startTimer(snapshot.data!);
-                                  return PrettyQrView.data(
-                                    data: snapshot.data!,
-                                    decoration: const PrettyQrDecoration(
-                                      image: PrettyQrDecorationImage(
-                                        image: AssetImage('assets/eoe.jpeg')
-                                      ),
-                                    ),
-                                  );
-                                }
-                              }
-                          ),
-                        ),
-                        //或是点击以下的链接
-                        TextButton(
-                          child: const Text('或是点击下面的按钮复制登录链接在手机浏览器打开'),
-                          onPressed: () {
-                            Clipboard.setData(ClipboardData(text: _qrCodeUrl!));
-                            AchievementView(
-                              title:  "提示",
-                              subTitle: '已复制登录链接',
-                              borderRadius: BorderRadius.circular(20.0),
-                              color: Colors.blueAccent,
-                            ).show(context);
-                          },
-                        ),
-                                      const Text('请注意，该软件并没有开源，里面的方法从始至终作者一人摸索出来的，全网没有先例，每次的一点小发现都要在四五个小时.我并不推荐宣传，因为过多宣传导致这个漏洞被封大家都没办法用，真的很想宣传的话请标注好原作者，如果直接抓包就得来了成果和剽窃有什么区别呢？\n2023.11.05-20:49')
-                      ],
-                    ),
-                    actions: [
-                      TextButton(
-                        child: const Text('确定'),
-                        onPressed: () {
-                          if (_inputCookie != null) {
-                            Global.setCookie(_inputCookie!);  // 点击确定的时候，保存cookie
-                            _timer.cancel();  // 清理timer
-                          }
-                          Navigator.of(context).pop();
-                        },
+          },
+        ),
+        const Text('--或是扫描以下的二维码--'),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.3,
+          child: FutureBuilder<String>(
+              future: GetQrcode().GetQrcodes(),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot){
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.error != null) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  _qrCodeUrl = snapshot.data;
+                  startTimer(snapshot.data!);
+                  return PrettyQrView.data(
+                    data: snapshot.data!,
+                    decoration: const PrettyQrDecoration(
+                      image: PrettyQrDecorationImage(
+                        image: AssetImage('assets/eoe.jpeg')
                       ),
-                    ],
+                    ),
                   );
-                },
+                }
+              }
+          ),
+        ),
+        //或是点击以下的链接
+        TextButton(
+          child: const Text('或是点击下面的按钮复制登录链接在手机浏览器打开'),
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: _qrCodeUrl!));
+            AchievementView(
+              title:  "提示",
+              subTitle: '已复制登录链接',
+              borderRadius: BorderRadius.circular(20.0),
+              color: Colors.blueAccent,
+            ).show(context);
+          },
+        ),
+        Wrap(children: [Text('最近，我看到了一些转载突破私信原理的文章，文章制作的非常精心，作者对于原理中各个齐淫技巧运用的炉火纯青，也可见一斑，在文章中，能够非常明显的看出作者对于原理的信任。这种自由传播知识的风气大抵是好的，非常符合当代青年清新，鲜活，和充满希望的特点。但有一点点瑕疵，鉴于本人才疏学浅，实在没有在文章中找到任何采用人类能够正常理解的叙述方式标明原理来自于果然多c曦果卷的信息，我横竖睡不着，仔细看了半天，才从文章中看出，满屏幕都写着侵权，在传播过程中，所有人都应当尊重著作权，标注原理来自于哪里，这要求并不过分。构成侵权的内容主要是原理部分并没有说明来自于哪里，我仅仅希望能保留原作者的链接，希望各位帮助我提醒那些没有著作权意识的作者，亡羊补牢，为时不晚\n2023.11.05-20:49')])
+      ],
+    ),
+  ),
+  actions: [
+    TextButton(
+      child: const Text('确定'),
+      onPressed: () {
+        if (_inputCookie != null) {
+          Global.setCookie(_inputCookie!);  // 点击确定的时候，保存cookie
+          _timer.cancel();  // 清理timer
+        }
+        Navigator.of(context).pop();
+      },
+    ),
+  ],
+);
+         },
               );
             },
           ),

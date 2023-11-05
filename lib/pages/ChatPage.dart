@@ -114,7 +114,7 @@ class _ChatPageState extends State<ChatPage> {
                   _handleImageSelection(2);
                 },
                 child: const Align(
-                  child: Text('照片 无视限制，可点击放大,完美显示，全网首发，拒绝转载，没开源(抓包可以，不要宣传做法好吗？守护每一次的进步，爱您)'),
+                  child: Text('照片 无视限制，app端可点击放大,完美显示'),
                 ),
               ),
               TextButton(
