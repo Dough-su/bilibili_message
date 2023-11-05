@@ -46,7 +46,7 @@ Response response = await dio.post(
         : await SendMessage().sendMessages(
             userid,
             '7',
-            '{"id":"216794","title":"点我查看大图哦~","url":"bilibili://browser?url=${response.data['data']['url']}","headline":"点开看大图哦~","source":16,"extra":{},"thumb":"${response.data['data']['url']}","author_id":"","source_desc":"点我查看大图哦~"}',
+            '{"id":"216794","title":"手机端点我查看大图哦~","url":"bilibili://browser?url=${response.data['data']['url']}","headline":"点开看大图哦~","source":16,"extra":{},"thumb":"${response.data['data']['url']}","author_id":"","source_desc":"手机端点我查看大图哦~"}',
             context);
   }
 }
